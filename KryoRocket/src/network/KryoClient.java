@@ -1,3 +1,4 @@
+package network;
 import java.io.IOException;
 
 import com.esotericsoftware.kryonet.Client;
