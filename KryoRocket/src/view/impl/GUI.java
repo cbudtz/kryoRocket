@@ -3,7 +3,7 @@ package view.impl;
 import javax.swing.JFrame;
 
 import dto.GameState;
-import dto.GameState.playerData;
+import dto.PlayerData;
 import view.IGUI;
 
 public class GUI implements IGUI {
@@ -34,8 +34,8 @@ public class GUI implements IGUI {
 
 		for (int i =0;i<400; i++){
 			GameState state = new GameState();
-			state.players.add(state.new playerData(100,100+i,0, "Brian"));
-			state.players.add(state.new playerData(200,100+i,0, "Brian"));
+			state.players.add(new PlayerData(100,100+i,i/10f, "Brian"));
+			state.players.add(new PlayerData(200,100+i,i/10f, "Brian"));
 			g.drawGameState(state);
 			delay(200);
 		}
@@ -47,6 +47,13 @@ public class GUI implements IGUI {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void receiveGameState(GameState state) {
+		System.out.println("GUI: GameState received!: " + state);
+		drawGameState(state);
+		
 	}
 
 }
