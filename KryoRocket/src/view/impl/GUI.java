@@ -20,6 +20,9 @@ import view.IGUI;
 
 public class GUI implements IGUI {
 
+	private static final String testPlayerID2 = "2";
+	private static final String testPlayerID1 = "1";
+	public String playerID = testPlayerID1;
 	JFrame frame;
 	GamePanel panel;
 	private KeyPressListener keyListener;
@@ -101,11 +104,13 @@ public class GUI implements IGUI {
 					break;
 				}
 				keyPressMessage.keysDown = new ArrayList<>(gameKeys);
+				
 				sendGameKeys(keyPressMessage);
 			}
 
 			private void sendGameKeys(KeyPressMessage keyPressMessage) {
 				if (keyListener!=null){
+					keyPressMessage.ShipUUID=playerID;
 					System.out.println("GUI: sending gameKeys:" + keyPressMessage.keysDown);
 					keyListener.receiveKeyPress(keyPressMessage);
 				}
@@ -127,8 +132,8 @@ public class GUI implements IGUI {
 
 		for (int i =0;i<400; i++){
 			GameState state = new GameState();
-			state.players.add(new PlayerData(100,100+i,i/10f, "Brian"));
-			state.players.add(new PlayerData(200,100+i,i/10f, "Brian"));
+			state.players.put(testPlayerID1,new PlayerData(100,100+i,i/10f, "Brian"));
+			state.players.put(testPlayerID2, new PlayerData(200,100+i,i/10f, "Brian"));
 			g.drawGameState(state);
 			delay(200);
 		}

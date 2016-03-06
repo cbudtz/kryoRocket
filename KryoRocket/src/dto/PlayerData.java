@@ -1,7 +1,12 @@
 package dto;
 
-public class PlayerData{
+import java.util.HashSet;
+import java.util.Set;
 
+public class PlayerData{
+	//InputData
+	public volatile Set<GameKeys> keysPressed = new HashSet<>();
+	
 	//Ship data - position
 	public double xPos;
 	public double yPos;

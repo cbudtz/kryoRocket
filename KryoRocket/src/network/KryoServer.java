@@ -15,8 +15,10 @@ import dto.PlayerData;
 import dto.GameKeys;
 
 public class KryoServer {
-	private volatile Set<GameKeys> keysPressed = new HashSet<>();
-	
+	//TODO refactor - move to gameEngineImplementation
+	//private volatile Set<GameKeys> keysPressed = new HashSet<>();
+	private GameState gameState = new GameState();
+
 
 	Server server;
 	public KryoServer(){
@@ -42,32 +44,37 @@ public class KryoServer {
 
 	public static void main(String[] args) {
 		KryoServer k = new KryoServer();
-		PlayerData player = new PlayerData(10,10,0,"Brian");
-
+		k.gameState.players.put("1", new PlayerData(10,10,0,"Brian"));
+		k.gameState.players.put("2", new PlayerData(20,20,0,"Børge"));
+		k.gameState.players.put("3", new PlayerData(30,20,0,"Benny"));
+		k.gameState.players.put("4", new PlayerData(40,20,0,"Bongo"));
 		while (true){
-			for (GameKeys key : k.keysPressed) {
-				switch (key) {
-				case UP:
-					player.yPos--;
-					break;
-				case DOWN:
-					player.yPos++;
-					break;
-				case LEFT:
-					player.xPos--;
-					break;
-				case RIGHT:
-					player.xPos++;
-				case FIRE1:
-				case FIRE2:
-				default:
-					break;
+			for (PlayerData p : k.gameState.players.values()){
+				
+				for (GameKeys key : p.keysPressed) {
+					switch (key) {
+					case UP:
+						p.yPos--;
+						break;
+					case DOWN:
+						p.yPos++;
+						break;
+					case LEFT:
+						p.xPos--;
+						break;
+					case RIGHT:
+						p.xPos++;
+					case FIRE1:
+					case FIRE2:
+					default:
+						break;
+					}
 				}
 			}
-			GameState g = new GameState();
-			g.players.add(player);
-			k.server.sendToAllTCP(g);
-			System.out.println("KryoServer: sent gamestate!");
+			
+			
+			k.server.sendToAllTCP(k.gameState);
+		//	System.out.println("KryoServer: sent gamestate!");
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
@@ -76,7 +83,7 @@ public class KryoServer {
 			}
 		}
 	}
-	
+
 	public class TurboServerListener extends Listener {
 
 
@@ -84,16 +91,16 @@ public class KryoServer {
 		public void received(Connection connection, Object object) {
 			if (object instanceof KeyPressMessage){
 				KeyPressMessage keyMsg = (KeyPressMessage) object;
-						System.out.println();
-						System.out.println("KryoServer: Received:" + keyMsg.keysDown);
-						keysPressed.clear();
-						for (GameKeys gameKey : keyMsg.keysDown) {
-							keysPressed.add(gameKey);
-						}
+				System.out.println();
+				System.out.println("KryoServer: Received:" + keyMsg.keysDown);
+				gameState.players.get(keyMsg.ShipUUID).keysPressed.clear();
+				for (GameKeys gameKey : keyMsg.keysDown) {
+					gameState.players.get(keyMsg.ShipUUID).keysPressed.add(gameKey);
+				}
 			}
-			
+
 			super.received(connection, object);
 		}
-		
+
 	}
 }

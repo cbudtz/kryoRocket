@@ -10,6 +10,8 @@ import dto.GameState;
 import dto.KeyPressMessage;
 //TODO refactor: make ClientInterface
 public class KryoClient implements Runnable, KeyPressListener{
+	private final String ec2Instance = "52.30.89.247";
+	private final String localHost = "localhost";
 
 	private Client client;
 	public volatile GameStateListener listener;
@@ -22,7 +24,7 @@ public class KryoClient implements Runnable, KeyPressListener{
 		
 		client.addListener(new TurboClientListener());
 		try {
-			client.connect(5000, "52.30.89.247", DataTransferObjects.TCP_PORT);
+			client.connect(5000, localHost, DataTransferObjects.TCP_PORT);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -21,7 +21,7 @@ public class GamePanel extends JPanel {
 		if (state!=null && state.players!=null){
 			g.setColor(Color.BLUE);
 			Polygon poly = null;
-			for (PlayerData p : state.players) {
+			for (PlayerData p : state.players.values()) {
 				poly = new ShipShape(p.xPos,p.yPos,p.angle);
 				g.drawPolygon(poly);
 			}
