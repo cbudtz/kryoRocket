@@ -24,7 +24,7 @@ public class KryoClient implements Runnable, KeyPressListener{
 		
 		client.addListener(new TurboClientListener());
 		try {
-			client.connect(5000, localHost, DataTransferObjects.TCP_PORT);
+			client.connect(5000, ec2Instance, DataTransferObjects.TCP_PORT);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
