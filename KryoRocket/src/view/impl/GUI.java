@@ -1,15 +1,29 @@
 package view.impl;
 
-import javax.swing.JFrame;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.swing.JFrame;
+import javax.swing.plaf.basic.BasicComboPopup.InvocationKeyHandler;
+
+import dto.GameKeys;
 import dto.GameState;
+import dto.KeyPressMessage;
 import dto.PlayerData;
+import network.KeyPressListener;
 import view.IGUI;
 
 public class GUI implements IGUI {
 
 	JFrame frame;
 	GamePanel panel;
+	private KeyPressListener keyListener;
+	private Set<GameKeys> gameKeys = new HashSet<>();
 
 	public GUI() {
 		frame = new JFrame("Test GUI");
@@ -19,6 +33,85 @@ public class GUI implements IGUI {
 		panel.setSize(800, 600);
 		frame.add(panel);
 		frame.setVisible(true);
+		frame.setFocusable(true);
+		frame.setFocusTraversalKeysEnabled(false);
+		frame.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				System.out.println("GUI: Key Typed: " + e.getKeyCode());
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				int keyCode = e.getKeyCode();
+				System.out.println("GUI: Key Released: " + keyCode);
+				KeyPressMessage keyPressMessage = new KeyPressMessage();
+				
+				switch (keyCode) {
+				case 38:
+					gameKeys.remove(GameKeys.UP);
+					keyPressMessage.released=GameKeys.UP;
+					break;
+				case 40:
+					gameKeys.remove(GameKeys.DOWN);
+					keyPressMessage.released= GameKeys.DOWN;
+					break;
+				case 37:
+					gameKeys.remove(GameKeys.LEFT);
+					keyPressMessage.released= GameKeys.LEFT;
+					break;
+				case 39:
+					gameKeys.remove(GameKeys.RIGHT);
+					keyPressMessage.released=GameKeys.RIGHT;
+					break;
+				default:
+					break;
+				}
+				keyPressMessage.keysDown = new ArrayList<GameKeys>(gameKeys);
+				sendGameKeys(keyPressMessage);
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				int keyCode = e.getKeyCode();
+				System.out.println("GUI: Key Pressed: " + keyCode);
+				KeyPressMessage keyPressMessage = new KeyPressMessage();
+				
+				switch (keyCode) {
+				case 38:
+					gameKeys.add(GameKeys.UP);
+					keyPressMessage.pressed=GameKeys.UP;
+					break;
+				case 40:
+					gameKeys.add(GameKeys.DOWN);
+					keyPressMessage.pressed= GameKeys.DOWN;
+					break;
+				case 37:
+					gameKeys.add(GameKeys.LEFT);
+					keyPressMessage.pressed= GameKeys.LEFT;
+					break;
+				case 39:
+					gameKeys.add(GameKeys.RIGHT);
+					keyPressMessage.pressed=GameKeys.RIGHT;
+					break;
+				default:
+					break;
+				}
+				keyPressMessage.keysDown = new ArrayList<>(gameKeys);
+				sendGameKeys(keyPressMessage);
+			}
+
+			private void sendGameKeys(KeyPressMessage keyPressMessage) {
+				if (keyListener!=null){
+					System.out.println("GUI: sending gameKeys:" + keyPressMessage.keysDown);
+					keyListener.receiveKeyPress(keyPressMessage);
+				}
+				
+			}
+		});
 
 	}
 
@@ -53,6 +146,12 @@ public class GUI implements IGUI {
 	public void receiveGameState(GameState state) {
 		System.out.println("GUI: GameState received!: " + state);
 		drawGameState(state);
+		
+	}
+
+	@Override
+	public void registerKeyPressListener(KeyPressListener listener) {
+		this.keyListener = listener;
 		
 	}
 

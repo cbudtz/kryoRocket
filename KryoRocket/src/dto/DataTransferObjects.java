@@ -16,7 +16,7 @@ public class DataTransferObjects {
 		kryo.register(ArrayList.class);
 		kryo.register(PlayerData.class);
 		kryo.register(KeyPressMessage.class);
-		kryo.register(Keys.class);
+		kryo.register(GameKeys.class);
 				
 		// TODO Auto-generated method stub
 		

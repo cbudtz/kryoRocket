@@ -1,15 +1,22 @@
 package network;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 
 import dto.DataTransferObjects;
 import dto.GameState;
+import dto.KeyPressMessage;
 import dto.PlayerData;
+import dto.GameKeys;
 
 public class KryoServer {
+	private volatile Set<GameKeys> keysPressed = new HashSet<>();
+	
 
 	Server server;
 	public KryoServer(){
@@ -25,6 +32,7 @@ public class KryoServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		server.addListener(new TurboServerListener());
 		server.start();
 	}
 
@@ -34,20 +42,58 @@ public class KryoServer {
 
 	public static void main(String[] args) {
 		KryoServer k = new KryoServer();
-		int i = 1;
+		PlayerData player = new PlayerData(10,10,0,"Brian");
+
 		while (true){
-			i++;
+			for (GameKeys key : k.keysPressed) {
+				switch (key) {
+				case UP:
+					player.yPos--;
+					break;
+				case DOWN:
+					player.yPos++;
+					break;
+				case LEFT:
+					player.xPos--;
+					break;
+				case RIGHT:
+					player.xPos++;
+				case FIRE1:
+				case FIRE2:
+				default:
+					break;
+				}
+			}
 			GameState g = new GameState();
-			g.players.add(new PlayerData(10, i, 0, "Brian"));
+			g.players.add(player);
 			k.server.sendToAllTCP(g);
 			System.out.println("KryoServer: sent gamestate!");
 			try {
-				Thread.sleep(200);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			if (i>600)i=0;
 		}
+	}
+	
+	public class TurboServerListener extends Listener {
+
+
+		@Override
+		public void received(Connection connection, Object object) {
+			if (object instanceof KeyPressMessage){
+				KeyPressMessage keyMsg = (KeyPressMessage) object;
+						System.out.println();
+						System.out.println("KryoServer: Received:" + keyMsg.keysDown);
+						keysPressed.clear();
+						for (GameKeys gameKey : keyMsg.keysDown) {
+							keysPressed.add(gameKey);
+						}
+			}
+			
+			super.received(connection, object);
+		}
+		
 	}
 }

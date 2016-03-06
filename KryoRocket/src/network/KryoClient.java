@@ -7,10 +7,9 @@ import com.esotericsoftware.kryonet.Listener;
 
 import dto.DataTransferObjects;
 import dto.GameState;
-
-public class KryoClient implements Runnable{
-
-	
+import dto.KeyPressMessage;
+//TODO refactor: make ClientInterface
+public class KryoClient implements Runnable, KeyPressListener{
 
 	private Client client;
 	public volatile GameStateListener listener;
@@ -23,7 +22,7 @@ public class KryoClient implements Runnable{
 		
 		client.addListener(new TurboClientListener());
 		try {
-			client.connect(5000, "localhost", DataTransferObjects.TCP_PORT);
+			client.connect(5000, "52.30.89.247", DataTransferObjects.TCP_PORT);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -59,6 +58,16 @@ public class KryoClient implements Runnable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	@Override
+	public void receiveKeyPress(KeyPressMessage keyMessage) {
+		if (client!=null){
+			client.sendTCP(keyMessage);
+			System.out.println("KryoClient: sending Keypress to server");
+		} else {
+			System.out.println("KryoClient: no network client");
+		}
+		
 	}
 
 }

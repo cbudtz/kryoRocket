@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class KeyPressMessage {
 	public long ShipUUID;
-	public ArrayList<Keys> keysDown = new ArrayList<>();
-	public Keys released;
-	public Keys pressed;
+	public ArrayList<GameKeys> keysDown = new ArrayList<>();
+	public GameKeys released;
+	public GameKeys pressed;
 	
 
 }
