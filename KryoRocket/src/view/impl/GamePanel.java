@@ -44,8 +44,8 @@ public class GamePanel extends JPanel {
 			double leftY = -5*scale;
 			double rightX = 5*scale;
 			double rightY = -5*scale;
-			double cosA = Math.cos(angle);System.out.println(cosA);
-			double sinA = Math.sin(angle);System.out.println(sinA);
+			double cosA = Math.cos(angle);
+			double sinA = Math.sin(angle);
 			double[] xPoly = {topX,leftX,rightX};
 			double[] yPoly = {topY,leftY,rightY};
 			for (int i = 0; i < xPoly.length; i++) {

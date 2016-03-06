@@ -1,4 +1,4 @@
-package server;
+package gameEngine;
 
 import java.util.UUID;
 
