@@ -7,35 +7,38 @@ import com.esotericsoftware.kryonet.Listener;
 
 import dto.DataTransferObjects;
 import dto.GameState;
+import dto.JoinMessage;
+import dto.JoinResponse;
 import dto.KeyPressMessage;
-//TODO refactor: make ClientInterface
-public class KryoClient implements Runnable, KeyPressListener{
+
+public class KryoClient implements Runnable, InputListener{
+	@SuppressWarnings("unused")
 	private final String ec2Instance = "52.30.89.247";
 	private final String localHost = "localhost";
 
 	private Client client;
-	public volatile GameStateListener listener;
+	public volatile EngineListener listener;
 
 	@Override
 	public void run() {
 		client = new Client();
 		client.start();
 		DataTransferObjects.register(client);
-		
+
 		client.addListener(new TurboClientListener());
 		try {
-			client.connect(5000, ec2Instance, DataTransferObjects.TCP_PORT);
+			client.connect(5000, localHost, DataTransferObjects.TCP_PORT);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private final class TurboClientListener extends Listener {
 		@Override
 		public void connected(Connection connection) {
 			super.connected(connection);
 		}
-		
+
 		@Override
 		public void received(Connection connection, Object object) {
 			if (object instanceof String){
@@ -46,6 +49,9 @@ public class KryoClient implements Runnable, KeyPressListener{
 					System.out.println("Sending gameState to listener: " + listener);
 					listener.receiveGameState((GameState)object);
 				}
+			} else if (object instanceof JoinResponse){
+				System.out.println(this.getClass() + ": Sending JoinResponse to listener");
+				listener.receiveJoinResponse((JoinResponse) object);
 			} else {
 				System.out.println("TurboClientListener - got:" + object.getClass());
 			}
@@ -69,6 +75,13 @@ public class KryoClient implements Runnable, KeyPressListener{
 		} else {
 			System.out.println("KryoClient: no network client");
 		}
+
+	}
+
+	@Override
+	public void receiveJoinMessage(JoinMessage object) {
+		if (client!=null)
+			client.sendTCP(object);
 		
 	}
 

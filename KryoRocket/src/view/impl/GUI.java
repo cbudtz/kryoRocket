@@ -1,21 +1,19 @@
 package view.impl;
 
-import java.awt.KeyEventDispatcher;
-import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import javax.swing.JFrame;
-import javax.swing.plaf.basic.BasicComboPopup.InvocationKeyHandler;
 
 import dto.GameKeys;
 import dto.GameState;
+import dto.JoinResponse;
 import dto.KeyPressMessage;
 import dto.PlayerData;
-import network.KeyPressListener;
+import network.InputListener;
 import view.IGUI;
 
 public class GUI implements IGUI {
@@ -25,7 +23,7 @@ public class GUI implements IGUI {
 	public String playerID = testPlayerID1;
 	JFrame frame;
 	GamePanel panel;
-	private KeyPressListener keyListener;
+	private InputListener keyListener;
 	private Set<GameKeys> gameKeys = new HashSet<>();
 
 	public GUI() {
@@ -72,7 +70,8 @@ public class GUI implements IGUI {
 				default:
 					break;
 				}
-				keyPressMessage.keysDown = new ArrayList<GameKeys>(gameKeys);
+				keyPressMessage.keysDown = new ConcurrentSkipListSet<GameKeys>();
+				keyPressMessage.keysDown.addAll(gameKeys);
 				sendGameKeys(keyPressMessage);
 				
 			}
@@ -103,7 +102,8 @@ public class GUI implements IGUI {
 				default:
 					break;
 				}
-				keyPressMessage.keysDown = new ArrayList<>(gameKeys);
+				keyPressMessage.keysDown = new ConcurrentSkipListSet<>();
+				keyPressMessage.keysDown.addAll(gameKeys);
 				
 				sendGameKeys(keyPressMessage);
 			}
@@ -155,8 +155,14 @@ public class GUI implements IGUI {
 	}
 
 	@Override
-	public void registerKeyPressListener(KeyPressListener listener) {
+	public void registerInputListener(InputListener listener) {
 		this.keyListener = listener;
+		
+	}
+
+	@Override
+	public void receiveJoinResponse(JoinResponse object) {
+		// TODO Auto-generated method stub
 		
 	}
 

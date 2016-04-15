@@ -1,9 +1,9 @@
 package view;
 import dto.GameState;
-import network.GameStateListener;
-import network.KeyPressListener;
+import network.EngineListener;
+import network.InputListener;
 
-public interface IGUI extends GameStateListener {
+public interface IGUI extends EngineListener {
 	void drawGameState(GameState state);
-	void registerKeyPressListener(KeyPressListener listener);
+	void registerInputListener(InputListener listener);
 }

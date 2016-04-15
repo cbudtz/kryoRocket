@@ -18,6 +18,6 @@ public class Main {
 		kryoClient.listener = gui; //TODO some method instead
 		kryoClient.run();
 		
-		gui.registerKeyPressListener(kryoClient);
+		gui.registerInputListener(kryoClient);
 	}
 }

@@ -1,11 +1,11 @@
 package dto;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 public class PlayerData{
 	//InputData
-	public volatile Set<GameKeys> keysPressed = new HashSet<>();
+	public volatile Set<GameKeys> keysDown = new ConcurrentSkipListSet<>();
 	
 	//Ship data - position
 	public double xPos;
@@ -21,7 +21,8 @@ public class PlayerData{
 	// 
 	public String name = "Player";
 	
-	public PlayerData(){
+	public PlayerData(String name){
+		this(100, 100, 90, name);
 		
 	}
 	

@@ -1,11 +1,15 @@
 package server;
 
+import gameEngine.GameEngineDummyImpl;
+import gameEngine.IGameEngine;
 import network.KryoServer;
 
 public class Main {
 
 	public static void main(String[] args) {
-		//For testing only
-		KryoServer.main(null);
+		
+		KryoServer kryoServer= new KryoServer();
+		IGameEngine gameEngine = new GameEngineDummyImpl();
+		gameEngine.registerGameStateListener(kryoServer);
 	}
 }
