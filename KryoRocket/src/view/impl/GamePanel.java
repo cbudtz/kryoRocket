@@ -3,15 +3,15 @@ package view.impl;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
-import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
 import dto.GameState;
 import dto.PlayerData;
-import view.impl.GamePanel.ShipShape;
 
 public class GamePanel extends JPanel {
+
+	private static final long serialVersionUID = 6564410093665078999L;
 	GameState state;
 
 	@Override
@@ -31,6 +31,8 @@ public class GamePanel extends JPanel {
 	}
 
 	public class ShipShape extends Polygon{
+
+		private static final long serialVersionUID = 4277942497997746584L;
 
 		public ShipShape(double xPos, double yPos, double angle) {
 			this(xPos, yPos, angle, 1);

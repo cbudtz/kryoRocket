@@ -11,7 +11,8 @@ public class Main {
 		//Initialize GUI and NetworkClient
 		IGUI gui = new GUI();
 		System.out.println("Select playerID (1,2,3 or 4)");
-		String playerID = new Scanner(System.in).next();
+		Scanner scan = new Scanner(System.in);
+		String playerID = scan.next();
 		((GUI) gui).playerID=playerID;
 		KryoClient kryoClient = new KryoClient();
 		//Glue them together
@@ -19,5 +20,7 @@ public class Main {
 		kryoClient.run();
 		
 		gui.registerInputListener(kryoClient);
+		scan.close();
+		
 	}
 }

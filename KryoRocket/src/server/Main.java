@@ -11,5 +11,9 @@ public class Main {
 		KryoServer kryoServer= new KryoServer();
 		IGameEngine gameEngine = new GameEngineDummyImpl();
 		gameEngine.registerGameStateListener(kryoServer);
+		kryoServer.gameEngine = gameEngine;
+		Thread engineThread = new Thread(gameEngine);
+		engineThread.start();
+		
 	}
 }
