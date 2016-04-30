@@ -13,6 +13,7 @@ import network.EngineListener;
 public class GameEngineDummyImpl implements IGameEngine {
 	GameState gameState = new GameState();
 	private EngineListener engineListener;
+	private String gameId;
 
 
 	@Override
@@ -52,7 +53,7 @@ public class GameEngineDummyImpl implements IGameEngine {
 				}
 			}
 			if (engineListener!= null){
-				engineListener.receiveGameState(gameState);
+				engineListener.receiveGameState(gameState, gameId);
 			}
 			try {
 				Thread.sleep(50);
@@ -71,8 +72,8 @@ public class GameEngineDummyImpl implements IGameEngine {
 	}
 
 	@Override
-	public void initializegame(GameSettings settings) {
-		// TODO Auto-generated method stub
+	public void initializegame(GameSettings settings,String gameId) {
+		this.gameId=gameId;
 		
 	}
 

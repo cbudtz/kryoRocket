@@ -8,7 +8,7 @@ import network.EngineListener;
 
 public interface IGameEngine{
 	//Pre action
-	void initializegame(GameSettings settings); //Runs gameEngine in own thread;
+	void initializegame(GameSettings settings, String gameId); //Runs gameEngine in own thread;
 	void joinGame(String playeruuid); //returns SessionID for player
 	//In game
 	void onKeyPressMes(KeyPressMessage keyMsg);

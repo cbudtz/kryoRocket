@@ -3,6 +3,6 @@ package network;
 import dto.GameState;
 
 public interface EngineListener {
-	void receiveGameState(GameState state);
+	void receiveGameState(GameState state, String gameId);
 
 }
