@@ -16,7 +16,7 @@ public class Main {
 		((GUI) gui).playerID=playerID;
 		KryoClient kryoClient = new KryoClient();
 		//Glue them together
-		kryoClient.listener = gui; //TODO some method instead
+//		kryoClient.listener = gui; //TODO some method instead
 		kryoClient.run();
 		
 		gui.registerInputListener(kryoClient);

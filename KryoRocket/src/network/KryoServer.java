@@ -53,7 +53,7 @@ public class KryoServer implements EngineListener {
 			} else if (object instanceof JoinMessage){
 				if (gameEngine!=null){
 					JoinMessage message = (JoinMessage) object;
-					String playerID = gameEngine.joinGame(message.name);
+					gameEngine.joinGame(message.name);
 					connection.sendTCP(new JoinResponse(playerID));
 				} else {System.out.println(this.getClass() + ": GameEngine not initialized!");
 				}

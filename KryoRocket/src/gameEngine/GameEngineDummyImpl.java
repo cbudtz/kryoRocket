@@ -1,8 +1,10 @@
 package gameEngine;
 
+import java.util.Map;
 import java.util.UUID;
 
 import dto.GameKeys;
+import dto.GameSettings;
 import dto.GameState;
 import dto.KeyPressMessage;
 import dto.PlayerData;
@@ -12,14 +14,6 @@ public class GameEngineDummyImpl implements IGameEngine {
 	GameState gameState = new GameState();
 	private EngineListener engineListener;
 
-
-
-	@Override
-	public String joinGame(String gameName) {
-		String playerID = UUID.randomUUID().toString();
-		gameState.players.put(playerID, new PlayerData(gameName));
-		return playerID;
-	}
 
 	@Override
 	public void onKeyPressMes(KeyPressMessage keyMsg) {
@@ -33,7 +27,6 @@ public class GameEngineDummyImpl implements IGameEngine {
 
 	}
 
-	@Override
 	public void run() {
 		while (true){
 			for (PlayerData p : gameState.players.values()){
@@ -74,6 +67,24 @@ public class GameEngineDummyImpl implements IGameEngine {
 	@Override
 	public void registerGameStateListener(EngineListener listener) {
 		this.engineListener = listener;
+		
+	}
+
+	@Override
+	public void initializegame(GameSettings settings) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void joinGame(String playeruuid) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onPlayerSelection(Map<String, String> selections) {
+		// TODO Auto-generated method stub
 		
 	}
 
