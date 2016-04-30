@@ -17,18 +17,22 @@ public class PlayerData{
 	public double angle;
 	// stats
 	public double health;
+	public int lives;
 
 	// 
-	public String name = "Player";
+	public String username = "Player"; //Playername translated from hub
+	public String playerid = ""; //ID from gameEngine
 	
-	public PlayerData(String name){
-		this(100, 100, 90, name);
+	//For testing purposes
+	public PlayerData(String playerid){
+		this(100, 100, 90, playerid);
 		
 	}
 	
-	public PlayerData(double xPos, double yPos, double angle, String name) {
+	public PlayerData(double xPos, double yPos, double angle, String playerid) {
 		this.angle=angle;
 		this.xPos = xPos;
 		this.yPos = yPos;
+		this.playerid = playerid;
 	}
 }

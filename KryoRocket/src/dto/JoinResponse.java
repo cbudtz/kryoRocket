@@ -1,10 +1,10 @@
 package dto;
 
 public class JoinResponse {
-	public String name;
+	public String uuid;
 
-	public JoinResponse(String name) {
-		this.name = name;
+	public JoinResponse(String uuid) {
+		this.uuid = uuid;
 	}
 
 

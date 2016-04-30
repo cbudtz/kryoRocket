@@ -160,10 +160,6 @@ public class GUI implements IGUI {
 		
 	}
 
-	@Override
-	public void receiveJoinResponse(JoinResponse object) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 }

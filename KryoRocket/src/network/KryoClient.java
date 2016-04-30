@@ -1,12 +1,18 @@
 package network;
 import java.io.IOException;
+import java.util.Map;
 
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.KryoNetException;
 import com.esotericsoftware.kryonet.Listener;
 
+import dto.CreateGameMessage;
+import dto.CreateGameResponse;
 import dto.DataTransferObjects;
 import dto.GameState;
+import dto.JoinGameMessage;
+import dto.JoinGameResponse;
 import dto.JoinMessage;
 import dto.JoinResponse;
 import dto.KeyPressMessage;
@@ -17,7 +23,7 @@ public class KryoClient implements Runnable, InputListener{
 	private final String localHost = "localhost";
 
 	private Client client;
-	public volatile EngineListener listener;
+	public volatile GameHubListener listener;
 
 	@Override
 	public void run() {
@@ -41,19 +47,20 @@ public class KryoClient implements Runnable, InputListener{
 
 		@Override
 		public void received(Connection connection, Object object) {
+			
+			if (listener == null) throw new KryoNetException(this.getClass() + ": WTF - received object before listener"); //If no listener - just ignore messages.
 			if (object instanceof String){
 				System.out.println(object);
 			} else if (object instanceof GameState) {
-				System.out.println("TurboClientListener - got: " + object.getClass());
-				if (listener!=null){
-					System.out.println("Sending gameState to listener: " + listener);
-					listener.receiveGameState((GameState)object);
-				}
+				listener.onGameStateChanged((GameState)object);				
 			} else if (object instanceof JoinResponse){
-				System.out.println(this.getClass() + ": Sending JoinResponse to listener");
-				listener.receiveJoinResponse((JoinResponse) object);
+				listener.onJoinResponse((JoinResponse) object);
+			} else if (object instanceof CreateGameResponse){
+				listener.onCreateGameResponse((CreateGameResponse)object);
+			} else if (object instanceof JoinGameResponse) {
+				listener.onJoinGameResponse((JoinGameResponse)object);
 			} else {
-				System.out.println("TurboClientListener - got:" + object.getClass());
+				System.err.println("TurboClientListener - got:" + object.getClass());
 			}
 		}
 	}
@@ -82,7 +89,22 @@ public class KryoClient implements Runnable, InputListener{
 	public void receiveJoinMessage(JoinMessage object) {
 		if (client!=null)
 			client.sendTCP(object);
-		
+
+	}
+	@Override
+	public void receiveCreateGameMessage(CreateGameMessage createGameMessage) {
+		// TODO Auto-generated method stub
+
+	}
+	@Override
+	public void receiveJoinGameMessage(JoinGameMessage joinGameMessage) {
+		// TODO Auto-generated method stub
+
+	}
+	@Override
+	public void receivePlayerSelection(Map<String, String> selections) {
+		// TODO Auto-generated method stub
+
 	}
 
 }
