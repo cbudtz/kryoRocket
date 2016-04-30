@@ -9,7 +9,6 @@ import com.esotericsoftware.kryonet.Server;
 import dto.DataTransferObjects;
 import dto.GameState;
 import dto.JoinMessage;
-import dto.JoinResponse;
 import dto.KeyPressMessage;
 import gameEngine.IGameEngine;
 
@@ -54,7 +53,7 @@ public class KryoServer implements EngineListener {
 				if (gameEngine!=null){
 					JoinMessage message = (JoinMessage) object;
 					gameEngine.joinGame(message.name);
-					connection.sendTCP(new JoinResponse(playerID));
+//					connection.sendTCP(new JoinResponse(playerID));
 				} else {System.out.println(this.getClass() + ": GameEngine not initialized!");
 				}
 
@@ -69,9 +68,5 @@ public class KryoServer implements EngineListener {
 
 	}
 
-	@Override
-	public void receiveJoinResponse(JoinResponse JoinResponse) {
-		if (server!=null) server.sendToAllTCP(JoinResponse);
 
-	}
 }
