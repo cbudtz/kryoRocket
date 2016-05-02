@@ -10,7 +10,6 @@ import javax.swing.JFrame;
 
 import dto.GameKeys;
 import dto.GameState;
-import dto.JoinResponse;
 import dto.KeyPressMessage;
 import dto.PlayerData;
 import network.InputListener;
@@ -147,16 +146,16 @@ public class GUI implements IGUI {
 		}
 	}
 
-	@Override
-	public void receiveGameState(GameState state) {
-		System.out.println("GUI: GameState received!: " + state);
-		drawGameState(state);
-		
-	}
 
 	@Override
 	public void registerInputListener(InputListener listener) {
 		this.keyListener = listener;
+		
+	}
+
+	@Override
+	public void receiveGameState(GameState state, String gameId) {
+		// TODO Auto-generated method stub
 		
 	}
 

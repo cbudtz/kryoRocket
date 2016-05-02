@@ -11,6 +11,7 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 
+import dto.CreateGameMessage;
 import dto.DataTransferObjects;
 import dto.GameState;
 import dto.JoinMessage;
@@ -71,9 +72,10 @@ public class KryoServer implements EngineListener {
 			if (object instanceof JoinMessage){
 				JoinMessage joinMessage = (JoinMessage)object;
 				MessageDigest md = getSHA256();
-				
-			} else if (object instanceof JoinMessage){
-				
+				//TODO
+			} else if (object instanceof CreateGameMessage){
+				CreateGameMessage createGameMessage = (CreateGameMessage)object;
+				//TODO
 			}
 		}
 
