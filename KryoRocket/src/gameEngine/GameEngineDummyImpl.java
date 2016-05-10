@@ -1,7 +1,6 @@
 package gameEngine;
 
 import java.util.Map;
-import java.util.UUID;
 
 import dto.GameKeys;
 import dto.GameSettings;
@@ -10,7 +9,7 @@ import dto.KeyPressMessage;
 import dto.PlayerData;
 import network.EngineListener;
 
-public class GameEngineDummyImpl implements IGameEngine {
+public class GameEngineDummyImpl implements IGameEngine, Runnable {
 	GameState gameState = new GameState();
 	private EngineListener engineListener;
 	private String gameId;
@@ -18,16 +17,16 @@ public class GameEngineDummyImpl implements IGameEngine {
 
 	@Override
 	public void onKeyPressMes(KeyPressMessage keyMsg) {
-		PlayerData player = gameState.players.get(keyMsg.ShipUUID);
+		PlayerData player = gameState.players.get(keyMsg.userHash);
 		if (player!=null){
-		gameState.players.get(keyMsg.ShipUUID).keysDown.clear();
-		gameState.players.get(keyMsg.ShipUUID).keysDown.addAll(keyMsg.keysDown);
+		gameState.players.get(keyMsg.userHash).keysDown.clear();
+		gameState.players.get(keyMsg.userHash).keysDown.addAll(keyMsg.keysDown);
 		} else {
 			System.out.println(this.getClass() + ": no such playerID!");
 		}
 
 	}
-
+	@Override
 	public void run() {
 		while (true){
 			for (PlayerData p : gameState.players.values()){
@@ -72,9 +71,14 @@ public class GameEngineDummyImpl implements IGameEngine {
 	}
 
 	@Override
-	public void initializegame(GameSettings settings,String gameId) {
+	public GameState initializegame(GameSettings settings,String gameId, EngineListener engineListener) {
 		this.gameId=gameId;
-		
+		//Put first player somewhere...
+		this.gameState.players.put(settings.gameOwner, new PlayerData(settings.gameOwner));
+		//Dirty, dirty
+		new Thread(this).start();
+		//Should have some setup of gameState
+		return gameState;
 	}
 
 	@Override

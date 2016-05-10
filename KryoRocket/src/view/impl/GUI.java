@@ -109,7 +109,7 @@ public class GUI implements IGUI {
 
 			private void sendGameKeys(KeyPressMessage keyPressMessage) {
 				if (keyListener!=null){
-					keyPressMessage.ShipUUID=playerID;
+					keyPressMessage.userHash=playerID;
 					System.out.println("GUI: sending gameKeys:" + keyPressMessage.keysDown);
 					keyListener.receiveKeyPress(keyPressMessage);
 				}

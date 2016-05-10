@@ -1,13 +1,10 @@
 package dto;
 
-import com.esotericsoftware.kryonet.EndPoint;
-
-import view.Menu;
-
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryonet.EndPoint;
 
 
 public class DataTransferObjects {
@@ -35,6 +32,9 @@ public class DataTransferObjects {
 		kryo.register(CreateGameMessage.class);
 		kryo.register(GameSettings.class);
 		kryo.register(CreateGameResponse.class);
+		//Look for games
+		kryo.register(GetPublicGamesMessage.class);
+		kryo.register(GetPublicGamesResponse.class); //Future implementation just returns a game, when we find one
 		
 		kryo.register(JoinGameMessage.class);
 		kryo.register(JoinGameResponse.class);

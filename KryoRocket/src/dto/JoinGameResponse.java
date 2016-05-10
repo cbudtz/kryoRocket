@@ -1,6 +1,10 @@
 package dto;
 
 public class JoinGameResponse {
-	public GameState initialGamestate;
+	public JoinGameResponse(String status) {
+		this.status=status;
+	}
+	//TODO refactor
+	public String status;
 
 }
