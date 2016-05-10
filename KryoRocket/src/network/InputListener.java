@@ -1,6 +1,6 @@
 package network;
 
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import dto.CreateGameMessage;
 import dto.JoinGameMessage;
@@ -14,7 +14,7 @@ public interface InputListener {
 	void receiveJoinGameMessage(JoinGameMessage joinGameMessage); //Join Game
 	//Ingame
 	void receiveKeyPress(KeyPressMessage keyMessage); //In game real-time keys
-	void receivePlayerSelection(Map<String, String> selections); //Make in game selection
+	void receivePlayerSelection(ConcurrentHashMap<String, String> selections); //Make in game selection
 	
 	
 	

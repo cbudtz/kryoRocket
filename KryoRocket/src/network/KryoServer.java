@@ -120,7 +120,7 @@ public class KryoServer implements EngineListener {
 				CreateGameMessage createGameMessage = (CreateGameMessage)object;
 				//generate random uuid for game
 				String gameUuid = UUID.randomUUID().toString();
-				String userHash = createGameMessage.useruuid;
+				String userHash = createGameMessage.userhash;
 				//Instantiate new gameEngine
 				GameEngineDummyImpl newGame = new GameEngineDummyImpl(); //TODO change to real implementation
 				//Start engine

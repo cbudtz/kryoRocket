@@ -63,7 +63,7 @@ public class GameEngineDummyImpl implements IGameEngine, Runnable {
 		}
 
 	}
-
+	
 	@Override
 	public void registerGameStateListener(EngineListener listener) {
 		this.engineListener = listener;
@@ -83,8 +83,8 @@ public class GameEngineDummyImpl implements IGameEngine, Runnable {
 
 	@Override
 	public void joinGame(String playeruuid) {
-		// TODO Auto-generated method stub
-		
+		System.out.println(this.getClass() + "player joined:" + playeruuid);
+		gameState.players.put(playeruuid, new PlayerData(playeruuid));
 	}
 
 	@Override

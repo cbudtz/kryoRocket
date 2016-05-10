@@ -1,6 +1,6 @@
 package network;
 import java.io.IOException;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
@@ -19,11 +19,21 @@ import dto.KeyPressMessage;
 
 public class KryoClient implements Runnable, InputListener{
 	@SuppressWarnings("unused")
-	private final String ec2Instance = "52.30.89.247";
-	private final String localHost = "localhost";
+	private final static String ec2Instance = "52.30.89.247";
+	private final static String localHost = "localhost";
 
 	private Client client;
 	public volatile GameHubListener listener;
+	public String ip;
+	
+	public KryoClient(GameHubListener listener) {
+		this(localHost, listener);
+	}
+	
+	public KryoClient(String remoteIP, GameHubListener listener){
+		this.ip = remoteIP;
+		this.listener=listener;
+	}
 
 	@Override
 	public void run() {
@@ -33,7 +43,7 @@ public class KryoClient implements Runnable, InputListener{
 
 		client.addListener(new TurboClientListener());
 		try {
-			client.connect(5000, localHost, DataTransferObjects.TCP_PORT);
+			client.connect(5000, ip, DataTransferObjects.TCP_PORT);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -44,7 +54,7 @@ public class KryoClient implements Runnable, InputListener{
 		public void connected(Connection connection) {
 			super.connected(connection);
 		}
-
+//receive from hub
 		@Override
 		public void received(Connection connection, Object object) {
 			
@@ -64,16 +74,7 @@ public class KryoClient implements Runnable, InputListener{
 			}
 		}
 	}
-	public static void main(String[] args) {
-		KryoClient k = new KryoClient();
-		k.run();
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//receive from GUI;
 	@Override
 	public void receiveKeyPress(KeyPressMessage keyMessage) {
 		if (client!=null){
@@ -87,23 +88,28 @@ public class KryoClient implements Runnable, InputListener{
 
 	@Override
 	public void receiveJoinMessage(JoinMessage object) {
+		System.out.println(client);
 		if (client!=null)
 			client.sendTCP(object);
 
 	}
 	@Override
 	public void receiveCreateGameMessage(CreateGameMessage createGameMessage) {
-		// TODO Auto-generated method stub
-
+		if (client!=null)client.sendTCP(createGameMessage);
 	}
+	
 	@Override
 	public void receiveJoinGameMessage(JoinGameMessage joinGameMessage) {
-		// TODO Auto-generated method stub
+		if (client!= null) {
+			client.sendTCP(joinGameMessage);
+		}
 
 	}
 	@Override
-	public void receivePlayerSelection(Map<String, String> selections) {
-		// TODO Auto-generated method stub
+	public void receivePlayerSelection(ConcurrentHashMap<String, String> selections) {
+		if (client!=null) {
+			client.sendTCP(selections);
+		}
 
 	}
 
