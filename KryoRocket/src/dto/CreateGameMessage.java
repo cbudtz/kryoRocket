@@ -1,15 +1,15 @@
 package dto;
 
 public class CreateGameMessage {
-	public String userhash;
 	public GameSettings settings;
 	
 	public CreateGameMessage() {
-	
 	}
-	public CreateGameMessage(String userHash, GameSettings settings){
-		this.userhash=userHash;
+	public CreateGameMessage(GameSettings settings){
 		this.settings= settings;
+	}
+	public CreateGameMessage(String userhash){
+		settings= new GameSettings(userhash);
 	}
 
 }

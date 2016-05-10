@@ -29,6 +29,7 @@ public class GameEngineDummyImpl implements IGameEngine, Runnable {
 	@Override
 	public void run() {
 		while (true){
+			System.out.println(this.getClass() +": Generating new gameState");
 			for (PlayerData p : gameState.players.values()){
 
 				for (GameKeys key : p.keysDown) {
@@ -55,7 +56,7 @@ public class GameEngineDummyImpl implements IGameEngine, Runnable {
 				engineListener.receiveGameState(gameState, gameId);
 			}
 			try {
-				Thread.sleep(50);
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -73,6 +74,7 @@ public class GameEngineDummyImpl implements IGameEngine, Runnable {
 	@Override
 	public GameState initializegame(GameSettings settings,String gameId, EngineListener engineListener) {
 		this.gameId=gameId;
+		this.engineListener=engineListener;
 		//Put first player somewhere...
 		this.gameState.players.put(settings.gameOwner, new PlayerData(settings.gameOwner));
 		//Dirty, dirty

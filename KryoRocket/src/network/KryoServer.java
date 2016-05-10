@@ -120,7 +120,7 @@ public class KryoServer implements EngineListener {
 				CreateGameMessage createGameMessage = (CreateGameMessage)object;
 				//generate random uuid for game
 				String gameUuid = UUID.randomUUID().toString();
-				String userHash = createGameMessage.userhash;
+				String userHash = createGameMessage.settings.gameOwner;
 				//Instantiate new gameEngine
 				GameEngineDummyImpl newGame = new GameEngineDummyImpl(); //TODO change to real implementation
 				//Start engine
@@ -176,7 +176,7 @@ public class KryoServer implements EngineListener {
 			String keystring = user + pass;
 			byte[] keyBytes = keystring.getBytes();
 			byte[] digest = md.digest(keyBytes);
-			return digest.toString();
+			return new String(digest);
 		}
 
 		private MessageDigest getSHA256() {

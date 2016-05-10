@@ -6,6 +6,7 @@ public class TestServerMain {
 	}
 
 	private void test() {
+		@SuppressWarnings("unused")
 		KryoServer kryoServer = new KryoServer();
 		
 	}

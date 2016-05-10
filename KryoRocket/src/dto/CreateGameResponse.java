@@ -11,6 +11,11 @@ public class CreateGameResponse {
 		this.gameId=uuid;
 		this.initialGameState = initialGamestate;
 	}
+	@Override
+	public String toString() {
+		return "CreateGameResponse [gameId=" + gameId + ", initialGameState=" + initialGameState + "]";
+	}
+	
 
 
 }

@@ -23,6 +23,10 @@ public class PlayerData{
 	public String username = "Player"; //Playername translated from hub
 	public String playerid = ""; //ID from gameEngine
 	
+	public PlayerData(){
+		//Default constructor
+	}
+	
 	//For testing purposes
 	public PlayerData(String playerid){
 		this(100, 100, 90, playerid);
@@ -35,4 +39,12 @@ public class PlayerData{
 		this.yPos = yPos;
 		this.playerid = playerid;
 	}
+
+	@Override
+	public String toString() {
+		return "PlayerData [keysDown=" + keysDown + ", xPos=" + xPos + ", yPos=" + yPos + ", xSpeed=" + xSpeed
+				+ ", ySpeed=" + ySpeed + ", xAcc=" + xAcc + ", yAcc=" + yAcc + ", angle=" + angle + ", health=" + health
+				+ ", lives=" + lives + ", username=" + username + ", playerid=" + playerid + "]";
+	}
+	
 }
